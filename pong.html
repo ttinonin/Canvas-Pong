@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+body{
+    text-align: center;
+    background-color: rgb(41, 41, 41);
+    color: white;
+}
+#canvas{
+    background-color: black;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid white;
+}
+</style>
+<body>
+<h1>PONG</h1>
+<canvas id="canvas" width="900" height="700">
+<script>
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+let dx = 3;
+let dy = -3;
+let p1 = 0;
+let p2 = 0;
+let barra = {
+    x: 10,
+    y: 10,
+    w: 25,
+    h: 100,
+    cor: "white"
+};
+
+let bola = {
+    x: 50,
+    y: 250,
+    w: 25,
+    h: 25,
+    cor: "white"
+};
+
+let barra2 = {
+    x: 865,
+    y: 10,
+    w: 25,
+    h: 100,
+    cor: "white"
+}
+function draw(){
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    ctx.fillRect(barra.x,barra.y,barra.w,barra.h);
+    ctx.fillStyle = barra.cor;
+    daniel()
+    
+    ctx.fillRect(bola.x,bola.y,bola.w,bola.h);
+    ctx.fillStyle = bola.cor;
+    muda()
+
+    ctx.fillRect(barra2.x, barra2.y, barra2.w, barra2.h);
+    ctx.fillStyle = barra2.cor;
+    bot()
+
+    ctx.font = "30px Arial black";
+    ctx.fillText(p1, 420, 50);
+    ctx.fillText(p2, 460, 50);
+    requestAnimationFrame(draw);
+}
+
+function daniel(){
+    document.addEventListener("mousemove", function(event) {
+        //barra.x = event.clientX;
+        barra.y = event.clientY - 150;
+        if(barra.y <= 110){
+            barra.y = 110;
+        }
+        if(barra.y >= 590){
+            barra.y = 590;
+        }
+    });
+}
+
+function bot(){
+    barra2.y = bola.y;
+    if(barra2.y >= 590){
+        barra2.y = 590;
+    }
+}
+
+function muda(){
+    //bola.x +=1
+    bola.x += dx;
+    bola.y += dy;
+    let dp1 = Math.sqrt((Math.pow((bola.x - barra2.x), 2) + Math.pow((bola.y - barra2.y),2)));
+    let dp2 = Math.sqrt((Math.pow((bola.x - barra.x), 2) + Math.pow((bola.y - barra.y),2)));
+    //console.log(dp)
+    if(bola.y + dy > canvas.height - 25 || bola.y + dy < 110) {
+        dy = -dy;
+    }
+    if(bola.x + dx > canvas.width) {
+        p1+=1;
+        bola.x = 350;
+        bola.y = 250;
+    }
+    if(bola.x + dx < 0){
+        p2+=1;
+        bola.x = 350;
+        bola.y = 250;
+        console.log(p2)
+    }
+    if(bola.x == barra.x - 25){
+        dx -= dy;
+    }
+    if(dp1 <= 25){
+        dx = -dx;
+    }
+    if(dp2 <= 25){
+        dx = -dx;
+    }
+
+
+}
+
+draw()
+
+</script>
+</body>
+</html>
